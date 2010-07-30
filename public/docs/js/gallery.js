@@ -1,21 +1,26 @@
 Gallery = {
 	currentImage: 0,
 	imageHolders: null,
+	imageWrapper: null,
 	imageHolderWidth: null,
 	imageCountHolder: null,
 	maxCount: null,
 	nextButton: null,
 	prevButoon: null,
-	init: function(imageHolder, imageWrapperWidth, imageCountHolder, nextButton, prevButton, descriptionHolder, descriptionWidth) {
+	init: function(imageHolder, imageWrapper, imageCountHolder, nextButton, prevButton, descriptionHolder, descriptionWidth) {
 		// set custom variables
 		this.imageHolder = imageHolder;
-		this.imageWrapperWidth = imageWrapperWidth;
+		this.imageWrapperWidth = imageWrapper.width();
+		this.imageWrapper = imageWrapper;
 		this.imageCountHolder = imageCountHolder;
 		this.maxCount = $("img", imageHolder).length;
 		this.nextButton = nextButton;
 		this.prevButton = prevButton;
 		this.descriptionHolder = descriptionHolder;
 		this.descriptionWidth = descriptionWidth;
+		
+		// Gives the wrapper a cursor so the user knows it's clickable.
+		this.imageWrapper.css('cursor', 'pointer');
 		
 		// check if a specific image has been specified in the URL
 		if(document.URL.match(/#[0-9]+/)) {
@@ -36,6 +41,13 @@ Gallery = {
 		});
 		this.prevButton.click(function() {
 			Gallery.previous();
+			this.blur();
+			return false;
+		});
+		
+		// Advance by clicking on picture
+		this.imageWrapper.click(function() {
+			Gallery.next();
 			this.blur();
 			return false;
 		});
